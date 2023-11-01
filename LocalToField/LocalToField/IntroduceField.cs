@@ -30,11 +30,9 @@ namespace LocalToField
             return intersections.SingleOrDefault();
         }
 
-        public async Task<Solution> FromLocalAsync(LocalDeclarationStatementSyntax local, CancellationToken cancellationToken = default)
+        public async Task<Document> FromLocalAsync(LocalDeclarationStatementSyntax local, CancellationToken cancellationToken = default)
         {
             SyntaxNode syntaxRoot = await GetSyntaxRoot(cancellationToken);
-
-            Solution solution = _document.Project.Solution;
 
             DocumentEditor editor = await DocumentEditor.CreateAsync(_document, cancellationToken);
 
@@ -74,9 +72,7 @@ namespace LocalToField
                 text = string.Concat(fileUpToField, generated, fileAfterField);
             }
 
-            Solution updatedSolution = solution.WithDocumentText(_document.Id, SourceText.From(text));
-
-            return updatedSolution;
+            return _document.WithText(SourceText.From(text));
         }
 
         private async Task<SyntaxNode> GetSyntaxRoot(CancellationToken cancellationToken)

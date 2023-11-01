@@ -325,13 +325,10 @@ namespace LocalToField.Tests
             LocalDeclarationStatementSyntax? local = await introduceField.FindLocalDeclarationAsync(span);
             Assert.NotNull(local);
 
-            Solution updatedSolution = await introduceField.FromLocalAsync(local);
+            Document updatedDocument = await introduceField.FromLocalAsync(local);
 
             SourceText expectedSource = SourceText.From(expected);
-            SourceText? updatedSource = await updatedSolution
-                .GetProject(project.Id)!
-                .GetDocument(document.Id)!
-                .GetTextAsync();
+            SourceText? updatedSource = await updatedDocument.GetTextAsync();
 
             try
             {
