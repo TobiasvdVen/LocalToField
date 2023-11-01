@@ -1,4 +1,5 @@
-﻿LocalToField/bin
-LocalToField/obj
-LocalToField.Vsix/bin
-LocalToField.Vsix/obj
+﻿.NCrunch_LocalToField
+.vs
+*.user
+**/bin
+**/obj
