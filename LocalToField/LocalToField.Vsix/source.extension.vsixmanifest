@@ -2,8 +2,8 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Id="LocalToField..dfb7523d-9a13-489f-b5b5-f38b10dd1ee2" Version="1.0" Language="en-US" Publisher="Tobia"/>
-    <DisplayName>LocalToField</DisplayName>
-    <Description xml:space="preserve">This is a sample code refactoring extension for the .NET Compiler Platform ("Roslyn").</Description>
+    <DisplayName>Introduce field from local</DisplayName>
+    <Description xml:space="preserve">Generate a field in your class to replace a given local variable. A common use case for this is adding a second unit test to a test class and realizing that some of the arrange step is shared with the first test and should be extracted to be class fields.</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,)" />
