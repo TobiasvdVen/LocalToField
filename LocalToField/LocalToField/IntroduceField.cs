@@ -46,11 +46,11 @@ namespace LocalToField
             LocalDeclarationParser localDeclarationParser = new();
             GenerateFieldInfo fieldInfo = localDeclarationParser.Parse(local);
 
-            SyntaxToken classIdentifier = classDeclaration.DescendantTokens().First(t => t.IsKind(SyntaxKind.IdentifierToken));
-            string className = classIdentifier.Text;
-
             if (classDeclaration != null)
             {
+                SyntaxToken classIdentifier = classDeclaration.DescendantTokens().First(t => t.IsKind(SyntaxKind.IdentifierToken));
+                string className = classIdentifier.Text;
+
                 SyntaxToken openBrace = classDeclaration
                     .DescendantTokens()
                     .First(n => n.IsKind(SyntaxKind.OpenBraceToken));
