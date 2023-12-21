@@ -320,7 +320,7 @@ namespace LocalToField.Tests
             int caretPosition = originalSource.ToString().IndexOf(localVariableName);
             TextSpan span = new(caretPosition, length: 0);
 
-            IntroduceField introduceField = new(document);
+            IntroduceField introduceField = new(document, new TestOutputDebugLog(_output));
 
             LocalDeclarationStatementSyntax? local = await introduceField.FindLocalDeclarationAsync(span);
             Assert.NotNull(local);

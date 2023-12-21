@@ -13,10 +13,12 @@ namespace LocalToField
     public class IntroduceField
     {
         private readonly Document _document;
+        private readonly IDebugLog _debug;
 
-        public IntroduceField(Document document)
+        public IntroduceField(Document document, IDebugLog debug)
         {
             _document = document;
+            _debug = debug;
         }
 
         public async Task<LocalDeclarationStatementSyntax?> FindLocalDeclarationAsync(TextSpan textSpan, CancellationToken cancellationToken = default)
@@ -27,7 +29,18 @@ namespace LocalToField
             var localDeclarations = descendantNodes.OfType<LocalDeclarationStatementSyntax>();
             var intersections = localDeclarations.Where(v => v.Span.IntersectsWith(textSpan));
 
-            return intersections.SingleOrDefault();
+            LocalDeclarationStatementSyntax? found = intersections.SingleOrDefault();
+
+            if (found is null)
+            {
+                _debug.Log($"Did not find a local declaration in span: {textSpan}.");
+            }
+            else
+            {
+                _debug.Log($"Found local declaration: {found}.");
+            }
+
+            return found;
         }
 
         public async Task<Document> FromLocalAsync(LocalDeclarationStatementSyntax local, CancellationToken cancellationToken = default)
@@ -37,6 +50,26 @@ namespace LocalToField
             DocumentEditor editor = await DocumentEditor.CreateAsync(_document, cancellationToken);
 
             ClassDeclarationSyntax classDeclaration = local.FirstAncestorOrSelf<ClassDeclarationSyntax>();
+
+            _debug.Log($"Found class declaration: {classDeclaration}.");
+
+            void T(SyntaxNode node)
+            {
+                if (node is null) return;
+
+                _debug.Log($"{node}\nNode Type: {node.Kind()}\nSpan: {node.Span}\n\n");
+
+                foreach (SyntaxNode n in node.ChildNodesAndTokens())
+                {
+                    T(n);
+                }
+            }
+
+            T(syntaxRoot);
+
+            var derp = local.DescendantNodes().FirstOrDefault(n => n is CompilationUnitSyntax);
+
+            _debug.Log($"{derp}");
 
             syntaxRoot = syntaxRoot.RemoveNode(local, SyntaxRemoveOptions.KeepNoTrivia);
 

@@ -12,7 +12,9 @@ namespace LocalToField
     {
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
-            IntroduceField introduceField = new(context.Document);
+            IDebugLog debugLog = new NullDebugLog();
+
+            IntroduceField introduceField = new(context.Document, debugLog);
 
             LocalDeclarationStatementSyntax? localDeclaration = await introduceField.FindLocalDeclarationAsync(context.Span);
 
